@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Repository\Interface\RegisterUserRepositoryInterface;
+use App\Repository\Database\RegisterUserRepository;
+use Illuminate\Contracts\Foundation\Application;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -12,6 +16,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+
+        $this->app->bind(
+            RegisterUserRepositoryInterface::class,
+            function (Application $app) {
+                return new RegisterUserRepository($app->make('db'));
+            }
+        );
     }
 
     /**
